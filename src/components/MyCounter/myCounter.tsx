@@ -1,17 +1,18 @@
-import React, { useState } from 'react'
+import React from 'react';
+import { SiteManager } from '../../siteManager';
+import { Button } from 'react-bootstrap';
 
-export const MyCounter: React.FunctionComponent<IMyCounterProps> = 
-(props: IMyCounterProps) => {
- const [count, setCount] = useState(0)
- return (<div>
-    <p>You clicked MyCounter {count} times</p>
-      <button type="submit" onClick={() => setCount(count + 1)}>Click 
-      MyCounter
-    </button>
-  </div>
- )
+export function MyCounter({inputSize, stateParam, paramStateSet, className, children}: {inputSize?: number, stateParam: number, paramStateSet: Function, className: string, children?: string;}){
+  return (
+    <div>
+      <Button className={className} variant='dark' type="submit" onClick={() => buttonClickedOutside(stateParam, paramStateSet, inputSize)}> 
+        {children || "press me"}
+      </Button>
+    </div>
+  );
 }
 
-interface IMyCounterProps {
- // TODO
+function buttonClickedOutside(param: number, paramSet: Function, inputSize?: number){
+  SiteManager.addDmg(inputSize || 1);
+  paramSet(SiteManager.getDmg());
 }

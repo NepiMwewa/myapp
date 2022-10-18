@@ -1,14 +1,13 @@
-import App from "../App";
-import { MyCounter } from "../components/MyCounter/myCounter";
-import { MyHeader } from "../layout/MyHeader/myHeader";
+import { Container} from "react-bootstrap";
 
 const Home = () => {
   return (
-    <div className="App container-fluid">
-      
-      <hr></hr>
-      <MyCounter/>
-  </div>
+    <Container className="App container-fluid">
+      <h2>
+        Sleepy Woof Studios
+      </h2>
+      <p>Welcome to the home of Sleepy Woof Studios.</p>
+    </Container>
   )
 };
 

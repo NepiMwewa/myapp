@@ -5,7 +5,7 @@ export function NavButton({currentSelection, children}: {currentSelection?: numb
 
   return (
     <div>
-      <button className="nav-link" type="submit" onClick={() => stateSet(state + 1)}> 
+      <button type="submit" onClick={() => stateSet(state + 1)}> 
         {children || "Mising Text"} {state}
       </button>
     </div>

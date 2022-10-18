@@ -1,13 +1,11 @@
-import ReactDOM from "react-dom/client";
-import React, { ReactElement, ReactNode } from 'react';
+//import React, { ReactElement, ReactNode } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./layout/Layout";
 import Home from "./pages/Home";
-import Contact from "./pages/Contact";
 import NoPage from "./pages/NoPage";
 import './App.css';
-import { MyCounter } from './components/MyCounter/myCounter';
-import { MyHeader } from './layout/MyHeader/myHeader';
+import { DungeonsOfOregoa } from './pages/DungeonsOfOregoa';
+import { Contact } from "./pages/Contact";
 
 
 function App() {
@@ -18,26 +16,25 @@ function App() {
 
           <Route index element={<Home />} />
 
-          <Route path="contact" element={<Contact />} />
+          <Route path="contact" element={<Contact/>} />
+
+          <Route path="dungeons-of-oregoa" element={<DungeonsOfOregoa />} />
 
           <Route path="*" element={<NoPage />} />
-          
+
         </Route>
       </Routes>
     </BrowserRouter>
     
   );
 }
-//<MyHeader title={SiteManager.getTitle()}/>
+
 export default App;
 
 /*
 Temp functions to know how to write them.
 
   
-
-*/
-
 
 // conventional props
 function Heading({title}: {title: string;}){
@@ -96,21 +93,4 @@ function List<ListItem>({
     </ul>
   )
 }
-/*
-<Heading title="hello there"/>
-
-      <HeadingWithContent>
-        <strong>Hi!</strong>
-      </HeadingWithContent>
-
-      <Container>foo</Container>
-
-      <TextWithNumber header={(num: number) => <span>Header {num}</span>}>
-        {(num: number) => <div>Today's number is: {num}</div>}
-      </TextWithNumber>
-
-      <List 
-        items={["Jack", "Sadie", "oso"]}
-        render={(item: string) => <div>{item.toLocaleLowerCase()}</div> }
-      ></List>
 */
