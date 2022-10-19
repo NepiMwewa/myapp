@@ -24,61 +24,121 @@ type PhotoObj = {
 
 export function Blog (){
   const [resourceType, setResourceType] = useState<string>('posts');
+
+  const [postsData, setPostsData] = useState<Array<PostObj>>([]);
+  const [commentsData, setCommentsData] = useState<Array<CommentObj>>([]);
+  const [photosData, setPhotosData] = useState<Array<PhotoObj>>([]);
+
   const [postItems, setPostItems] = useState<Array<PostObj>>([]);
   const [commentItems, setCommentItems] = useState<Array<CommentObj>>([]);
   const [photoItems, setPhotoItems] = useState<Array<PhotoObj>>([]);
-  const [items, setItems] = useState<Array<any>>([]);
+
   const [currentPage, setCurrentPage] = useState<number>(0);
+  const[maximumPages, setMaximumPages] = useState<number>(0);
+  let cardMaximum: number = 10;
 
   useEffect( () => {
+    setCurrentPage(0);
+    switch(resourceType){
+      case "posts": {
+        if(postItems.length === 0)
+        fetch(`https://jsonplaceholder.typicode.com/${resourceType}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error('Network response was not OK: ' + response.status);
+            }
+            return response.json();
+          })
+          .then((json) => {
+            setPostsData(json);
+            setMaximumPages(Math.floor(json.length / cardMaximum)  - 1);
+            setPostItems(json.slice(0, cardMaximum));
+          })
+          .catch((error) => {
+            console.error('There has been a problem with your fetch operation:', error);
+          });
+        
+        
+        break;
+      }
 
-    fetch(`https://jsonplaceholder.typicode.com/${resourceType}`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not OK: ' + response.status);
-          }
-          return response.json();
-        })
-        .then((json) => {
-          setItems(json.slice(currentPage * 10, (currentPage * 10) + 10));
-        })
-        .catch((error) => {
-          console.error('There has been a problem with your fetch operation:', error);
-        });
-    /*
-    if(resourceType === "posts"){
-      fetch(`https://jsonplaceholder.typicode.com/${resourceType}`)
-        .then(response => response.json())
-        .then(json => setPostItems(json));
-    }else if(resourceType === "comments"){
-      fetch(`https://jsonplaceholder.typicode.com/${resourceType}`)
-        .then(response => response.json())
-        .then(json => setCommentItems(json));
-    }else{
-      fetch(`https://jsonplaceholder.typicode.com/${resourceType}`)
-        .then(response => response.json())
-        .then(json => setPhotoItems(json));
+      case "comments": {
+        if(commentItems.length === 0)
+        fetch(`https://jsonplaceholder.typicode.com/${resourceType}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error('Network response was not OK: ' + response.status);
+            }
+            return response.json();
+          })
+          .then((json) => {
+            setCommentsData(json);
+            setMaximumPages(Math.floor(json.length / cardMaximum) - 1);
+            setCommentItems(json.slice(0, cardMaximum));
+          })
+          .catch((error) => {
+            console.error('There has been a problem with your fetch operation:', error);
+          });
+        break;
+      }
+
+      case "photos": {
+        if(photoItems.length === 0)
+        fetch(`https://jsonplaceholder.typicode.com/${resourceType}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error('Network response was not OK: ' + response.status);
+            }
+            return response.json();
+          })
+          .then((json) => {
+            setPhotosData(json);
+            setMaximumPages(Math.floor(json.length / cardMaximum)  - 1);
+            setPhotoItems(json.slice(0 , cardMaximum));
+          })
+          .catch((error) => {
+            console.error('There has been a problem with your fetch operation:', error);
+          });
+        
+        break;
+      }
+
+      default: {
+        throw 'Error: trying to load wrong resourceType. resourceType: ' + resourceType;
+        break;
+      }
     }
-    */
-  }, [resourceType, currentPage]);
+
+  }, [resourceType]);
+
+  useEffect( () => {
+    switch(resourceType){
+      case "posts": {
+        setPostItems(postsData.slice(currentPage * 10, (currentPage * 10) + cardMaximum));
+        break;
+      }
+
+      case "comments": {
+
+        setCommentItems(commentsData.slice(currentPage * 10, (currentPage * 10) + cardMaximum));
+        break;
+      }
+
+      case "photos": {
+
+        setPhotoItems(photosData.slice(currentPage * 10, (currentPage * 10) + cardMaximum));
+        break;
+      }
+
+      default: {
+        throw 'Error: trying to load wrong resourceType. resourceType: ' + resourceType;
+        break;
+      }
+    }
+  }, [currentPage, resourceType]);
   
   function displayCards(){
     
-    if(resourceType === "posts") {
-      return (items.map(item => {
-        return displayPost(item);
-      }))
-    }else if(resourceType === "comments"){
-      return (items.map(item => {
-        return displayComment(item);
-      }))
-    }else {
-      return (items.map(item => {
-        return displayPhoto(item);
-      }))
-    }
-
-    /*
     if(resourceType === "posts") {
       return (postItems.map(item => {
         return displayPost(item);
@@ -92,16 +152,18 @@ export function Blog (){
         return displayPhoto(item);
       }))
     }
-    */
+    
   }
 
+  //return next page button. if the current page is within the last 10 pages of posts, disable it.
   function nextPage(){
     
     return (
-      <Button className='m-2' onClick={() => setCurrentPage(prevCurrentPage => prevCurrentPage + 1)}>Next Page</Button>
+      <Button className='m-2' disabled={currentPage >= maximumPages ? true : false} onClick={() => setCurrentPage(prevCurrentPage => prevCurrentPage + 1)}>Next Page</Button>
     )
     
   }
+  //return previous page button. if the current page is less than or equal to 0, disable it.
   function previousPage(){
 
     return (
@@ -125,7 +187,7 @@ export function Blog (){
             { previousPage() }
           </Col>
           <Col>
-            <h3>{currentPage}</h3>
+            <h3>{currentPage + 1}</h3>
           </Col>
           <Col>
             { nextPage() }
@@ -141,7 +203,7 @@ export function Blog (){
             { previousPage() }
           </Col>
           <Col>
-            <h3>{currentPage}</h3>
+            <h3>{currentPage + 1}</h3>
           </Col>
           <Col>
             { nextPage() }
