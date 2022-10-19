@@ -21,8 +21,8 @@ const NoPage = () => {
             </LinkContainer>
           </Col>
           <Col>
-            <LinkContainer to="/contact">
-              <Button variant="dark">Contact</Button>
+            <LinkContainer to="/blog">
+              <Button variant="dark">Blog</Button>
             </LinkContainer>
           </Col>
           <Col>

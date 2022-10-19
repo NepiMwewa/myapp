@@ -19,8 +19,8 @@ export function Header({title}: {title?: string;}){
             <LinkContainer to="/">
               <Nav.Link>Home</Nav.Link>
             </LinkContainer>
-            <LinkContainer to="/contact">
-              <Nav.Link>Contact</Nav.Link>
+            <LinkContainer to="/blog">
+              <Nav.Link>Blog</Nav.Link>
             </LinkContainer>
             <LinkContainer to="/dungeons-of-oregoa">
               <Nav.Link>Dungeons of Oregoa</Nav.Link>
