@@ -155,19 +155,31 @@ export function Blog (){
     
   }
 
-  //return next page button. if the current page is within the last 10 pages of posts, disable it.
-  function nextPage(){
-    
+  function firstPage(){
     return (
-      <Button className='m-2' disabled={currentPage >= maximumPages ? true : false} onClick={() => setCurrentPage(prevCurrentPage => prevCurrentPage + 1)}>Next Page</Button>
+      <Button className='m-2' disabled={currentPage <= 0 ? true : false} onClick={() => setCurrentPage(prevCurrentPage => 0)}>First Page</Button>
     )
-    
   }
+  function lastPage(){
+    return (
+      <Button className='m-2' disabled={currentPage >= maximumPages ? true : false} onClick={() => setCurrentPage(prevCurrentPage => maximumPages)}>Last Page</Button>
+    )
+  }
+
+
   //return previous page button. if the current page is less than or equal to 0, disable it.
   function previousPage(){
 
     return (
       <Button className='m-2' disabled={currentPage <= 0 ? true : false} onClick={() => setCurrentPage(prevCurrentPage => prevCurrentPage - 1)}>Previous Page</Button>
+    )
+    
+  }
+  //return next page button. if the current page is within the last 10 pages of posts, disable it.
+  function nextPage(){
+  
+    return (
+      <Button className='m-2' disabled={currentPage >= maximumPages ? true : false} onClick={() => setCurrentPage(prevCurrentPage => prevCurrentPage + 1)}>Next Page</Button>
     )
     
   }
@@ -184,6 +196,9 @@ export function Blog (){
       <Container>
         <Row>
           <Col>
+            { firstPage() }
+          </Col>
+          <Col>
             { previousPage() }
           </Col>
           <Col>
@@ -191,6 +206,9 @@ export function Blog (){
           </Col>
           <Col>
             { nextPage() }
+          </Col>
+          <Col>
+            { lastPage() }
           </Col>
         </Row>
       </Container>
@@ -200,6 +218,9 @@ export function Blog (){
       <Container>
         <Row>
           <Col>
+            {firstPage()}
+          </Col>
+          <Col>
             { previousPage() }
           </Col>
           <Col>
@@ -207,6 +228,9 @@ export function Blog (){
           </Col>
           <Col>
             { nextPage() }
+          </Col>
+          <Col>
+            { lastPage() }
           </Col>
         </Row>
       </Container>
