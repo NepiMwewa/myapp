@@ -1,6 +1,5 @@
 import React, {useState, useEffect } from 'react';
-import { Card, Container } from "react-bootstrap";
-import { Button } from 'react-bootstrap';
+import { Card, Col, Container, Row, Button } from "react-bootstrap";
 
 type PostObj = {
   userId: number,
@@ -29,13 +28,23 @@ export function Blog (){
   const [commentItems, setCommentItems] = useState<Array<CommentObj>>([]);
   const [photoItems, setPhotoItems] = useState<Array<PhotoObj>>([]);
   const [items, setItems] = useState<Array<any>>([]);
+  const [currentPage, setCurrentPage] = useState<number>(0);
 
   useEffect( () => {
 
     fetch(`https://jsonplaceholder.typicode.com/${resourceType}`)
-        .then(response => response.json())
-        .then(json => setItems(json));
-
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not OK: ' + response.status);
+          }
+          return response.json();
+        })
+        .then((json) => {
+          setItems(json.slice(currentPage * 10, (currentPage * 10) + 10));
+        })
+        .catch((error) => {
+          console.error('There has been a problem with your fetch operation:', error);
+        });
     /*
     if(resourceType === "posts"){
       fetch(`https://jsonplaceholder.typicode.com/${resourceType}`)
@@ -51,7 +60,7 @@ export function Blog (){
         .then(json => setPhotoItems(json));
     }
     */
-  }, [resourceType]);
+  }, [resourceType, currentPage]);
   
   function displayCards(){
     
@@ -86,8 +95,23 @@ export function Blog (){
     */
   }
 
+  function nextPage(){
+    
+    return (
+      <Button className='m-2' onClick={() => setCurrentPage(prevCurrentPage => prevCurrentPage + 1)}>Next Page</Button>
+    )
+    
+  }
+  function previousPage(){
+
+    return (
+      <Button className='m-2' disabled={currentPage <= 0 ? true : false} onClick={() => setCurrentPage(prevCurrentPage => prevCurrentPage - 1)}>Previous Page</Button>
+    )
+    
+  }
+
   return (
-    <Container className="container-fluid">
+    <Container className="container-fluid text-center">
       <div>
       
         <Button className='m-2' onClick={() => setResourceType('posts')}>Posts</Button>
@@ -96,7 +120,33 @@ export function Blog (){
       </div>
       <h2>{resourceType}</h2>
       <Container>
+        <Row>
+          <Col>
+            { previousPage() }
+          </Col>
+          <Col>
+            <h3>{currentPage}</h3>
+          </Col>
+          <Col>
+            { nextPage() }
+          </Col>
+        </Row>
+      </Container>
+      <Container>
         { displayCards() }
+      </Container>
+      <Container>
+        <Row>
+          <Col>
+            { previousPage() }
+          </Col>
+          <Col>
+            <h3>{currentPage}</h3>
+          </Col>
+          <Col>
+            { nextPage() }
+          </Col>
+        </Row>
       </Container>
     </Container>
   );
