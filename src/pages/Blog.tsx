@@ -41,6 +41,7 @@ export function Blog (){
     setCurrentPage(0);
     switch(resourceType){
       case "posts": {
+        setMaximumPages(Math.floor(postsData.length / cardMaximum)  - 1);
         if(postItems.length === 0)
         fetch(`https://jsonplaceholder.typicode.com/${resourceType}`)
           .then((response) => {
@@ -63,6 +64,7 @@ export function Blog (){
       }
 
       case "comments": {
+        setMaximumPages(Math.floor(commentsData.length / cardMaximum)  - 1);
         if(commentItems.length === 0)
         fetch(`https://jsonplaceholder.typicode.com/${resourceType}`)
           .then((response) => {
@@ -83,6 +85,7 @@ export function Blog (){
       }
 
       case "photos": {
+        setMaximumPages(Math.floor(photosData.length / cardMaximum)  - 1);
         if(photoItems.length === 0)
         fetch(`https://jsonplaceholder.typicode.com/${resourceType}`)
           .then((response) => {
@@ -102,14 +105,15 @@ export function Blog (){
         
         break;
       }
-
+      /*
       default: {
         throw 'Error: trying to load wrong resourceType. resourceType: ' + resourceType;
         break;
       }
+      */
     }
 
-  }, [resourceType]);
+  }, [resourceType]); // eslint-disable-line
 
   useEffect( () => {
     switch(resourceType){
@@ -129,13 +133,14 @@ export function Blog (){
         setPhotoItems(photosData.slice(currentPage * 10, (currentPage * 10) + cardMaximum));
         break;
       }
-
+      /*
       default: {
         throw 'Error: trying to load wrong resourceType. resourceType: ' + resourceType;
         break;
       }
+      */
     }
-  }, [currentPage, resourceType]);
+  }, [currentPage, resourceType]); // eslint-disable-line
   
   function displayCards(){
     
