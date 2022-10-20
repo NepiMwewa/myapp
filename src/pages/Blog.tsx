@@ -173,6 +173,7 @@ export function Blog (){
   function firstPage(){
     return (
       <Button
+        variant='secondary'
         disabled={currentPage <= 0 ? true : false} 
         onClick={() => setCurrentPage(prevCurrentPage => 0)}>
           {isMobile? '<<' : 'First Page'}
@@ -182,7 +183,8 @@ export function Blog (){
   //return the last page button.  if the current page is within the last 10 pages of posts, disable it.
   function lastPage(){
     return (
-      <Button
+      <Button 
+        variant='secondary'
         disabled={currentPage >= maximumPages ? true : false} 
         onClick={() => setCurrentPage(prevCurrentPage => maximumPages)}>
           {isMobile? '>>' : 'Last Page'}
@@ -193,6 +195,7 @@ export function Blog (){
   function previousPage(){
     return (
       <Button
+        variant='secondary'
         disabled={currentPage <= 0 ? true : false} 
         onClick={() => setCurrentPage(prevCurrentPage => prevCurrentPage - 1)}>
           {isMobile? '<' : 'Prev Page'}
@@ -204,6 +207,7 @@ export function Blog (){
   function nextPage(){
     return (
       <Button
+        variant='secondary'
         disabled={currentPage >= maximumPages ? true : false} 
         onClick={() => setCurrentPage(prevCurrentPage => prevCurrentPage + 1)}>
           {isMobile? '>' : 'Next Page'}
@@ -267,8 +271,8 @@ export function Blog (){
       </div>
       <h2>{resourceType}</h2>
       { pageNav() }
-      <Container fluid>
-        <Row >
+      <Container fluid="sm">
+        <Row xs={1} sm={1} md={2} lg={3} xl={4} >
         { displayCards() }
         </Row>
       </Container>
@@ -283,7 +287,7 @@ export function Blog (){
 function displayPost(item: PostObj){
     return(
       <Col className='my-2' key={item.id.toString()}>
-        <Card className='m-auto h-100' style={{ width: '18rem' }}>
+        <Card className='m-auto h-100' style={{ width: 'auto' }}>
           <Card.Body>
             <Card.Title>{item.title}</Card.Title>
             <Card.Subtitle className="mb-2 text-muted">{item.userId}</Card.Subtitle>
@@ -300,7 +304,7 @@ function displayPost(item: PostObj){
 function displayComment(item: CommentObj){
   return(
     <Col className='my-2' key={item.id.toString()}>
-      <Card className='m-auto h-100' key={item.id.toString()} style={{ width: '18rem' }}>
+      <Card className='m-auto h-100' style={{ width: 'auto' }} >
         <Card.Body >
           <Card.Title>{item.name}</Card.Title>
           <Card.Subtitle className="mb-2 text-muted">{item.email}</Card.Subtitle>
@@ -317,8 +321,8 @@ function displayComment(item: CommentObj){
 function displayPhoto(item: PhotoObj){
   return(
     <Col className='my-2' key={item.id.toString()}>
-      <Card className='m-auto h-100' key={item.id.toString()} style={{ width: '18rem' }}>
-        <Card.Img variant="top" src={item.url} />
+      <Card className='m-auto h-100' style={{ width: 'auto' }}>
+        <Card.Img variant="top" src={item.thumbnailUrl} />
         <Card.Body>
           <Card.Title>{item.title}</Card.Title>
           <Card.Subtitle className="mb-2 text-muted">{item.albumId}</Card.Subtitle>
