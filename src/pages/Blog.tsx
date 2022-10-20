@@ -23,22 +23,26 @@ type PhotoObj = {
 }
 
 export function Blog (){
+  //state to check what resource type is selected
   const [resourceType, setResourceType] = useState<string>("posts");
 
+  //import fetched data stored to prevent having to refetch new data
   const [postsData, setPostsData] = useState<Array<PostObj>>([]);
   const [commentsData, setCommentsData] = useState<Array<CommentObj>>([]);
   const [photosData, setPhotosData] = useState<Array<PhotoObj>>([]);
 
+  //items sliced based off from current page, maximum amount of card items
   const [postItems, setPostItems] = useState<Array<PostObj>>([]);
   const [commentItems, setCommentItems] = useState<Array<CommentObj>>([]);
   const [photoItems, setPhotoItems] = useState<Array<PhotoObj>>([]);
 
-  const [width, setWidth] = useState<number>(window.innerWidth);
-  const isMobile = width <= 768;
-
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [maximumPages, setMaximumPages] = useState<number>(1);
   const cardMaximum: number = 20;
+
+  //if screensize is less than or equal to 768 set isMobile to true
+  const [width, setWidth] = useState<number>(window.innerWidth);
+  const isMobile = width <= 768;
 
   //When resourceType is changed, change the displaycards, maximum pages and currently displayed card items.
   useEffect( () => {
@@ -155,6 +159,7 @@ export function Blog (){
     }
   }, [currentPage]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  //check if screen size is for mobile.
   useEffect(() => {
     window.addEventListener('resize', handleWindowSizeChange);
     return () => {
@@ -170,7 +175,7 @@ export function Blog (){
       <Button
         disabled={currentPage <= 0 ? true : false} 
         onClick={() => setCurrentPage(prevCurrentPage => 0)}>
-          First Page
+          {isMobile? '<<' : 'First Page'}
       </Button>
     )
   }
@@ -180,7 +185,7 @@ export function Blog (){
       <Button
         disabled={currentPage >= maximumPages ? true : false} 
         onClick={() => setCurrentPage(prevCurrentPage => maximumPages)}>
-          Last Page
+          {isMobile? '>>' : 'Last Page'}
       </Button>
     )
   }
@@ -190,7 +195,7 @@ export function Blog (){
       <Button
         disabled={currentPage <= 0 ? true : false} 
         onClick={() => setCurrentPage(prevCurrentPage => prevCurrentPage - 1)}>
-          Previous Page
+          {isMobile? '<' : 'Prev Page'}
       </Button>
     )
     
@@ -201,7 +206,7 @@ export function Blog (){
       <Button
         disabled={currentPage >= maximumPages ? true : false} 
         onClick={() => setCurrentPage(prevCurrentPage => prevCurrentPage + 1)}>
-          Next Page
+          {isMobile? '>' : 'Next Page'}
       </Button>
     )
     
